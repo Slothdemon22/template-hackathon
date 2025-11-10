@@ -2,9 +2,9 @@
 
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 
-export default function StripeSuccessPage() {
+function StripeSuccessContent() {
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
   const [loading, setLoading] = useState(true)
@@ -39,6 +39,23 @@ export default function StripeSuccessPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function StripeSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-lg font-semibold text-gray-700 dark:text-gray-300">Loading...</div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white mx-auto mt-4"></div>
+          </div>
+        </div>
+      }
+    >
+      <StripeSuccessContent />
+    </Suspense>
   )
 }
 
